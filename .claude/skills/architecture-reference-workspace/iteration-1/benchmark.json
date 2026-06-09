@@ -1,0 +1,115 @@
+{
+  "skill_name": "architecture-reference",
+  "iteration": 1,
+  "configurations": [
+    {
+      "name": "with_skill",
+      "pass_rate": 0.971,
+      "passed": 34,
+      "total": 35,
+      "avg_duration_seconds": 132.8,
+      "avg_tokens": 31627,
+      "duration_stddev": 48.2,
+      "tokens_stddev": 7891
+    }
+  ],
+  "per_eval_results": [
+    {
+      "eval_id": 1,
+      "eval_name": "backend-structure",
+      "with_skill": {
+        "passed": 4,
+        "total": 4,
+        "duration_seconds": 132.848,
+        "tokens": 34762
+      }
+    },
+    {
+      "eval_id": 2,
+      "eval_name": "authentication-flow",
+      "with_skill": {
+        "passed": 4,
+        "total": 4,
+        "duration_seconds": 146.583,
+        "tokens": 28793
+      }
+    },
+    {
+      "eval_id": 3,
+      "eval_name": "add-new-role",
+      "with_skill": {
+        "passed": 5,
+        "total": 5,
+        "duration_seconds": 147.303,
+        "tokens": 39941
+      }
+    },
+    {
+      "eval_id": 4,
+      "eval_name": "data-model",
+      "with_skill": {
+        "passed": 4,
+        "total": 5,
+        "duration_seconds": 85.213,
+        "tokens": 20589
+      }
+    },
+    {
+      "eval_id": 5,
+      "eval_name": "add-wishlist",
+      "with_skill": {
+        "passed": 4,
+        "total": 4,
+        "duration_seconds": 241.207,
+        "tokens": 43204
+      }
+    },
+    {
+      "eval_id": 6,
+      "eval_name": "jwt-rationale",
+      "with_skill": {
+        "passed": 4,
+        "total": 4,
+        "duration_seconds": 97.7,
+        "tokens": 32804
+      }
+    },
+    {
+      "eval_id": 7,
+      "eval_name": "routing-guards",
+      "with_skill": {
+        "passed": 5,
+        "total": 5,
+        "duration_seconds": 87.818,
+        "tokens": 21645
+      }
+    },
+    {
+      "eval_id": 8,
+      "eval_name": "mock-mode",
+      "with_skill": {
+        "passed": 5,
+        "total": 5,
+        "duration_seconds": 123.905,
+        "tokens": 31276
+      }
+    }
+  ],
+  "summary": {
+    "total_assertions": 35,
+    "passed_assertions": 34,
+    "failed_assertions": 1,
+    "pass_rate": "97.1%",
+    "total_duration": "1062.5s (17.7 min)",
+    "total_tokens": 253014,
+    "observations": [
+      "Excellent pass rate (97.1%) - skill successfully provides accurate architecture information",
+      "Only 1 failed assertion: data model eval expected price snapshot to be captured at order time, but response correctly notes this is not currently implemented",
+      "All responses included specific file paths and code examples as expected",
+      "Comprehensive responses averaged 31,627 tokens per test",
+      "Add wishlist test took longest (241s) due to generating 600+ line implementation guide",
+      "Data model test was fastest (85s) with focused scope",
+      "Skill consistently references ARCHITECTURE.md content accurately"
+    ]
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "eval_id": 2,
+  "eval_name": "authentication-flow",
+  "expectations": [
+    {
+      "text": "Explains full JWT flow",
+      "passed": true,
+      "evidence": "Covers login → token generation → storage → interceptor → validation"
+    },
+    {
+      "text": "Names specific classes",
+      "passed": true,
+      "evidence": "Mentions AuthController, AuthService, JwtService, JwtAuthFilter, AuthTokenInterceptor"
+    },
+    {
+      "text": "Describes JWT structure",
+      "passed": true,
+      "evidence": "Explains token contains sub (email), role, expiration, signature with HMAC-SHA"
+    },
+    {
+      "text": "Covers frontend and backend",
+      "passed": true,
+      "evidence": "Explains both sides of the authentication flow with specific file paths"
+    }
+  ],
+  "overall_pass": true
+}

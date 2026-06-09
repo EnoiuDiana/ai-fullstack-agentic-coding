@@ -1,0 +1,27 @@
+{
+  "eval_id": 1,
+  "eval_name": "backend-structure",
+  "expectations": [
+    {
+      "text": "Mentions three-layer architecture",
+      "passed": true,
+      "evidence": "Response explicitly explains controller → service → repository layers"
+    },
+    {
+      "text": "Lists cross-cutting concerns",
+      "passed": true,
+      "evidence": "Mentions dto/mapper, security, exception, config packages"
+    },
+    {
+      "text": "Describes key patterns",
+      "passed": true,
+      "evidence": "References Strategy pattern for order processing and Repository pattern"
+    },
+    {
+      "text": "Provides file paths",
+      "passed": true,
+      "evidence": "Includes specific directory paths like onlineshopapi/src/main/java/msg/onlineshopapi/"
+    }
+  ],
+  "overall_pass": true
+}

@@ -1,0 +1,53 @@
+{
+  "skill_name": "architecture-reference",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "How is the backend structured? I'm new to this codebase and need to understand the architecture.",
+      "expected_output": "Should explain the three-layer architecture (controller → service → repository), mention cross-cutting concerns (dto/mapper, security, exception, config), describe key patterns (Strategy pattern for order processing, Repository pattern), and reference specific directories under onlineshopapi/",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "How does authentication work in this app? I need to understand the full flow from login to accessing protected endpoints.",
+      "expected_output": "Should explain JWT-based authentication flow: user logs in → AuthController.login() → AuthService validates credentials → JwtService generates token → frontend stores in localStorage → AuthTokenInterceptor adds Bearer token to requests → JwtAuthFilter validates token on backend → SecurityContext set. Should mention specific files and the JWT structure (sub, role, iat, exp).",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "I want to add a new user role called 'Manager' that sits between Customer and Admin. What files do I need to change?",
+      "expected_output": "Should provide the 5-step checklist: (1) Add to UserRole enum in backend, (2) Update UserRole enum in frontend, (3) Add @PreAuthorize annotations to protected endpoints, (4) Add rolesGuard with data: { roles: [...] } to routes, (5) Use *hasRole directive in templates. Should mention specific file locations for enums on both backend and frontend.",
+      "files": []
+    },
+    {
+      "id": 4,
+      "prompt": "What's the data model for orders? I'm trying to understand how orders, order details, and products relate to each other.",
+      "expected_output": "Should explain the entity relationships: User → Order (one-to-many), Order → OrderDetail (one-to-many with cascade delete), OrderDetail → Product (many-to-one with snapshot price at order time). Should mention composite key (order_id, product_id) for OrderDetail and that Address is embedded in Order. Should show the entity hierarchy.",
+      "files": []
+    },
+    {
+      "id": 5,
+      "prompt": "I need to add a new feature for wish lists. Can you guide me through what needs to be created on both backend and frontend?",
+      "expected_output": "Should provide backend steps: (1) Create entity in model/, (2) Add repository in repository/, (3) Implement service in service/, (4) Add DTOs in dto/ with mapper, (5) Create controller in controller/, (6) Add Flyway migration. Should provide frontend steps: (1) Create feature module in features/<feature>/, (2) Add routes in <feature>.routes.ts, (3) Import routes in app.routes.ts, (4) Add navigation constant. Should be structured as clear actionable steps.",
+      "files": []
+    },
+    {
+      "id": 6,
+      "prompt": "Why did we choose JWT for authentication instead of session-based auth?",
+      "expected_output": "Should explain the reasoning from Technology Decisions section: stateless authentication scales horizontally, no server-side session storage needed, works well with SPA architecture. Should acknowledge the trade-offs and note it fits the overall three-tier architecture.",
+      "files": []
+    },
+    {
+      "id": 7,
+      "prompt": "Explain the routing architecture and how guards work to protect routes in the frontend.",
+      "expected_output": "Should explain the guard chain: routes can have canActivate: [authGuard, rolesGuard] where authGuard checks JWT presence and rolesGuard checks user.role vs route.data.roles. Should explain guestGuard blocks authenticated users from login/register. Should show example route configuration with data: { roles: [UserRole.Admin] }. Should mention routes are defined in app.routes.ts with feature-specific sub-routes.",
+      "files": []
+    },
+    {
+      "id": 8,
+      "prompt": "How does mock mode work? I want to develop without running the backend.",
+      "expected_output": "Should explain environment-based API: environment.mock.ts sets apiUrl to 'http://mock-api' which triggers mockApiInterceptor. Should explain the flow: interceptor catches requests → routes to feature-specific handlers (auth-handler.mock.ts, etc.) → returns mock data from core/mocks/data/. Should mention how to start mock mode: npm run start:mock.",
+      "files": []
+    }
+  ]
+}

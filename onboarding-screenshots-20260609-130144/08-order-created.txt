@@ -1,0 +1,1 @@
+Order successfully created! Order ID: 76c55175-2907-4101-a8ed-0f599e597ea5, created on 2026-06-09T13:03:52, containing 1 item with total amount $149.99. The orders page also shows previous mock orders for demonstration.

@@ -1,0 +1,27 @@
+{
+  "eval_id": 5,
+  "eval_name": "add-wishlist",
+  "expectations": [
+    {
+      "text": "Backend steps listed",
+      "passed": true,
+      "evidence": "Provides the 6-step backend process (entity, repository, service, DTOs, controller, migration)"
+    },
+    {
+      "text": "Frontend steps listed",
+      "passed": true,
+      "evidence": "Provides detailed frontend implementation with service, components, and routes"
+    },
+    {
+      "text": "Steps are actionable",
+      "passed": true,
+      "evidence": "600+ line guide with complete code examples and implementation details"
+    },
+    {
+      "text": "Mentions Flyway migration",
+      "passed": true,
+      "evidence": "Includes database migration as part of backend implementation"
+    }
+  ],
+  "overall_pass": true
+}

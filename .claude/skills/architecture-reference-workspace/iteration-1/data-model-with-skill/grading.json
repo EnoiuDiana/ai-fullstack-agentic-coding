@@ -1,0 +1,32 @@
+{
+  "eval_id": 4,
+  "eval_name": "data-model",
+  "expectations": [
+    {
+      "text": "Explains entity relationships",
+      "passed": true,
+      "evidence": "Covers User → Order → OrderDetail chain with detailed relationship descriptions"
+    },
+    {
+      "text": "Mentions composite key",
+      "passed": true,
+      "evidence": "Notes OrderDetail uses (order_id, product_id) composite key with @EmbeddedId"
+    },
+    {
+      "text": "Describes cascade behavior",
+      "passed": true,
+      "evidence": "Mentions cascade = CascadeType.ALL and orphanRemoval = true from Order to OrderDetail"
+    },
+    {
+      "text": "Notes price snapshot",
+      "passed": false,
+      "evidence": "Response mentions price should be captured but notes it's currently not implemented"
+    },
+    {
+      "text": "Mentions embedded address",
+      "passed": true,
+      "evidence": "Notes Address is @Embeddable and embedded in Order entity"
+    }
+  ],
+  "overall_pass": true
+}

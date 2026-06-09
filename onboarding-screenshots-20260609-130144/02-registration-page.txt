@@ -1,0 +1,1 @@
+Registration page showing "Create Account" form with fields for email, first name, last name, and password.

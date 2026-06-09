@@ -1,0 +1,1 @@
+Product detail page for Wireless Headphones ($149.99, 0.25g) in Electronics category. Shows product image, description "High-quality wireless headphones with noise cancellation", quantity selector (default 1), total price calculator, and "Add to Cart" button.

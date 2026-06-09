@@ -1,0 +1,174 @@
+# Order Data Model - Entity Relationships
+
+## Overview
+
+The order data model uses a classic many-to-many relationship pattern with a junction table (OrderDetail) that contains additional attributes. Here's how the three main entities relate:
+
+**Order → OrderDetail ← Product**
+
+## Entity Relationships
+
+### 1. Order Entity
+**File:** `onlineshopapi/src/main/java/msg/onlineshopapi/model/Order.java`
+**Table:** `orders`
+
+**Fields:**
+- `id` (UUID) - Primary key, auto-generated
+- `user` (ManyToOne → User) - The customer who placed the order
+- `createdAt` (LocalDateTime) - Timestamp when order was created (auto-set on persist)
+- `address` (Embedded Address) - Delivery address (country, city, county, streetAddress)
+- `orderDetails` (OneToMany → OrderDetail) - Collection of order line items
+
+**Relationships:**
+- **Many-to-One with User**: Each order belongs to one user, but a user can have many orders
+- **One-to-Many with OrderDetail**: An order contains multiple order details (line items). The relationship is bidirectional with cascade ALL and orphan removal, meaning when an order is deleted, all its order details are also deleted.
+
+### 2. OrderDetail Entity (Junction Table)
+**File:** `onlineshopapi/src/main/java/msg/onlineshopapi/model/OrderDetail.java`
+**Table:** `order_details`
+
+**Fields:**
+- `id` (Composite Key - OrderDetailId) - Embeddable composite key containing:
+  - `orderId` (UUID)
+  - `productId` (UUID)
+- `order` (ManyToOne → Order) - The order this detail belongs to
+- `product` (ManyToOne → Product) - The product being ordered
+- `shippedFrom` (ManyToOne → Location) - The warehouse/location this item ships from
+- `quantity` (Integer) - Number of units ordered
+
+**Relationships:**
+- **Many-to-One with Order**: Multiple order details belong to one order. Uses `@MapsId("orderId")` to map part of the composite key.
+- **Many-to-One with Product**: Multiple order details can reference the same product. Uses `@MapsId("productId")` to map part of the composite key.
+- **Many-to-One with Location**: Tracks which warehouse/location the product was shipped from. This supports the multi-location order strategy.
+
+**Primary Key Strategy:**
+The entity uses a composite primary key (order_id + product_id), implemented through the `@EmbeddedId` annotation with the `OrderDetailId` class. This means:
+- Each combination of order and product is unique
+- A customer cannot have the same product twice in one order (quantity is aggregated in a single row)
+
+### 3. Product Entity
+**File:** `onlineshopapi/src/main/java/msg/onlineshopapi/model/Product.java`
+**Table:** `products`
+
+**Fields:**
+- `id` (UUID) - Primary key, auto-generated
+- `name` (String) - Product name
+- `description` (String) - Product description
+- `price` (BigDecimal) - Product price
+- `weight` (Double) - Product weight
+- `category` (ManyToOne → ProductCategory) - Product category
+- `imageUrl` (String) - URL to product image
+
+**Relationships:**
+- **Many-to-One with ProductCategory**: Each product belongs to one category
+- **Implicitly referenced by OrderDetail**: Products are ordered through the OrderDetail junction table
+
+## Database Schema (SQL)
+
+The schema from `onlineshopapi/src/main/resources/db/migration/V1__create_tables.sql`:
+
+```sql
+-- Orders table
+CREATE TABLE orders (
+    id             UUID         PRIMARY KEY,
+    user_id        UUID         NOT NULL REFERENCES users (id),
+    created_at     TIMESTAMP    NOT NULL,
+    country        VARCHAR(100),
+    city           VARCHAR(100),
+    county         VARCHAR(100),
+    street_address VARCHAR(255)
+);
+
+-- Order details junction table
+CREATE TABLE order_details (
+    order_id        UUID    NOT NULL REFERENCES orders (id),
+    product_id      UUID    NOT NULL REFERENCES products (id),
+    shipped_from_id UUID    NOT NULL REFERENCES locations (id),
+    quantity        INTEGER NOT NULL,
+    PRIMARY KEY (order_id, product_id)
+);
+
+-- Products table
+CREATE TABLE products (
+    id          UUID              PRIMARY KEY,
+    name        VARCHAR(255)      NOT NULL,
+    description VARCHAR(1000),
+    price       DECIMAL(10, 2)    NOT NULL,
+    weight      DOUBLE PRECISION,
+    category_id UUID              NOT NULL REFERENCES product_categories (id),
+    image_url   VARCHAR(500)
+);
+```
+
+## Data Flow Example
+
+When a customer places an order:
+
+1. **Order Creation**:
+   - New `Order` record is created with user_id and delivery address
+   - `createdAt` timestamp is auto-set via `@PrePersist`
+
+2. **Order Details Creation**:
+   - For each product in the cart, an `OrderDetail` record is created
+   - Each detail links to the order (order_id) and product (product_id)
+   - The `quantity` field stores how many units of that product
+   - The `shippedFrom` field tracks which warehouse fulfilled this line item
+
+3. **Product Reference**:
+   - Products are not modified when ordered
+   - The relationship is read-only from the order perspective
+   - Product details (name, price) at order time should be captured in the order system if price history is needed (currently not implemented)
+
+## Key Design Patterns
+
+### Composite Primary Key
+The `OrderDetail` uses a composite key (orderId + productId) which:
+- Ensures uniqueness of product per order
+- Eliminates need for a separate surrogate key
+- Naturally represents the many-to-many relationship
+
+### Embedded Address
+The `Address` class is marked as `@Embeddable` and used in both:
+- `Order` entity (delivery address)
+- `Location` entity (warehouse address)
+
+This promotes code reuse and keeps the database normalized by storing address fields directly in the parent table.
+
+### Cascade Operations
+The Order → OrderDetail relationship uses:
+- `cascade = CascadeType.ALL`: All operations (persist, merge, remove) cascade to order details
+- `orphanRemoval = true`: If an OrderDetail is removed from the collection, it's deleted from the database
+
+This ensures referential integrity and simplifies order management.
+
+### Location Tracking
+Each `OrderDetail` records `shippedFrom` location, supporting:
+- Multi-warehouse fulfillment
+- Order strategy pattern (SINGLE_LOCATION vs MULTIPLE_LOCATIONS)
+- Shipment tracking and logistics
+
+## Related Entities
+
+### User
+- **Relationship**: One user can have many orders
+- **Reference**: Order.user (ManyToOne)
+- **Cascade**: Not specified (orders are not deleted when user is deleted)
+
+### Location
+- **Relationship**: One location can ship many order details
+- **Reference**: OrderDetail.shippedFrom (ManyToOne)
+- **Purpose**: Tracks warehouse fulfillment
+
+### Stock
+- **Table**: `stocks` (composite key: product_id + location_id)
+- **Purpose**: Tracks product inventory at each location
+- **Used by**: Order processing strategies to determine which warehouse can fulfill the order
+
+## Summary
+
+The order data model follows a classic e-commerce pattern:
+- **Orders** are the main aggregate root containing order metadata and delivery information
+- **OrderDetails** represent line items, linking products to orders with quantity and fulfillment data
+- **Products** are referenced but not modified by orders
+- The composite key on OrderDetail enforces business rules (one row per product per order)
+- Location tracking enables sophisticated fulfillment strategies

@@ -1,0 +1,1 @@
+Registration completed successfully. User was redirected back to the login page to sign in with the newly created account.

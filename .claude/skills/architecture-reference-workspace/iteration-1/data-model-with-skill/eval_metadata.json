@@ -1,0 +1,27 @@
+{
+  "eval_id": 4,
+  "eval_name": "data-model",
+  "prompt": "What's the data model for orders? I'm trying to understand how orders, order details, and products relate to each other.",
+  "assertions": [
+    {
+      "name": "explains_entity_relationships",
+      "description": "Response covers User → Order → OrderDetail chain"
+    },
+    {
+      "name": "mentions_composite_key",
+      "description": "Notes OrderDetail uses (order_id, product_id) composite key"
+    },
+    {
+      "name": "describes_cascade_behavior",
+      "description": "Mentions cascade delete from Order to OrderDetail"
+    },
+    {
+      "name": "notes_price_snapshot",
+      "description": "Explains OrderDetail captures product_price at order time"
+    },
+    {
+      "name": "mentions_embedded_address",
+      "description": "Notes Address is embedded in Order entity"
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "eval_id": 7,
+  "eval_name": "routing-guards",
+  "expectations": [
+    {
+      "text": "Explains guard chain",
+      "passed": true,
+      "evidence": "Describes canActivate: [authGuard, rolesGuard] pattern"
+    },
+    {
+      "text": "Explains authGuard",
+      "passed": true,
+      "evidence": "Describes it checks JWT presence"
+    },
+    {
+      "text": "Explains rolesGuard",
+      "passed": true,
+      "evidence": "Describes it checks user.role vs route.data.roles"
+    },
+    {
+      "text": "Mentions guestGuard",
+      "passed": true,
+      "evidence": "Notes it blocks authenticated users from login/register"
+    },
+    {
+      "text": "Shows route configuration",
+      "passed": true,
+      "evidence": "Includes example with data: { roles: [...] }"
+    }
+  ],
+  "overall_pass": true
+}

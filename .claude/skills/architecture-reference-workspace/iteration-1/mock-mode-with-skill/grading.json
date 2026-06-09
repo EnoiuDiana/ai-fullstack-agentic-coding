@@ -1,0 +1,32 @@
+{
+  "eval_id": 8,
+  "eval_name": "mock-mode",
+  "expectations": [
+    {
+      "text": "Explains environment switching",
+      "passed": true,
+      "evidence": "Describes environment.mock.ts sets apiUrl to 'http://mock-api'"
+    },
+    {
+      "text": "Mentions mockApiInterceptor",
+      "passed": true,
+      "evidence": "Names the interceptor that catches mock requests"
+    },
+    {
+      "text": "Describes handler routing",
+      "passed": true,
+      "evidence": "Explains requests route to feature-specific handlers"
+    },
+    {
+      "text": "Provides start command",
+      "passed": true,
+      "evidence": "Includes npm run start:mock command"
+    },
+    {
+      "text": "Mentions mock data location",
+      "passed": true,
+      "evidence": "References core/mocks/data/ directory"
+    }
+  ],
+  "overall_pass": true
+}

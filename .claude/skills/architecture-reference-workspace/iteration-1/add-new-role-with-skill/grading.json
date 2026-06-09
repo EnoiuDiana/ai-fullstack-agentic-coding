@@ -1,0 +1,32 @@
+{
+  "eval_id": 3,
+  "eval_name": "add-new-role",
+  "expectations": [
+    {
+      "text": "Provides step-by-step checklist",
+      "passed": true,
+      "evidence": "Lists required file changes with clear organization and implementation order"
+    },
+    {
+      "text": "Mentions backend enum",
+      "passed": true,
+      "evidence": "References UserRole.java enum in backend"
+    },
+    {
+      "text": "Mentions frontend enum",
+      "passed": true,
+      "evidence": "References user-roles.enum.ts in frontend"
+    },
+    {
+      "text": "Includes @PreAuthorize",
+      "passed": true,
+      "evidence": "Shows updating @PreAuthorize annotations on controller methods"
+    },
+    {
+      "text": "Includes guard configuration",
+      "passed": true,
+      "evidence": "Mentions rolesGuard with data: { roles: [...] } pattern"
+    }
+  ],
+  "overall_pass": true
+}

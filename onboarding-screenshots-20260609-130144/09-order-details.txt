@@ -1,0 +1,1 @@
+Order details page showing the newly created order (76c55175-2907-4101-a8ed-0f599e597ea5) with creation timestamp, shipping information, total amount, and item details including the Wireless Headphones product.

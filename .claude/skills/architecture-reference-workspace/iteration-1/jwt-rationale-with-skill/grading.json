@@ -1,0 +1,27 @@
+{
+  "eval_id": 6,
+  "eval_name": "jwt-rationale",
+  "expectations": [
+    {
+      "text": "States stateless benefit",
+      "passed": true,
+      "evidence": "Mentions JWT enables stateless authentication"
+    },
+    {
+      "text": "States scaling benefit",
+      "passed": true,
+      "evidence": "Explains horizontal scaling capability"
+    },
+    {
+      "text": "States SPA compatibility",
+      "passed": true,
+      "evidence": "Notes it works well with single-page application architecture"
+    },
+    {
+      "text": "No session storage needed",
+      "passed": true,
+      "evidence": "Explicitly states eliminates need for server-side session storage"
+    }
+  ],
+  "overall_pass": true
+}
