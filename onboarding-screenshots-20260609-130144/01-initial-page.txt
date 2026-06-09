@@ -1,1 +1,0 @@
-Application opened and redirected to the login page. Shows Sign In form with email and password fields, and a link to register for new users.

@@ -1,1 +1,0 @@
-Cart page showing 1 item: Wireless Headphones (Electronics, $149.99, quantity: 1). Order summary displays subtotal of $149.99 with options to adjust quantity, remove items, clear cart, or place order.

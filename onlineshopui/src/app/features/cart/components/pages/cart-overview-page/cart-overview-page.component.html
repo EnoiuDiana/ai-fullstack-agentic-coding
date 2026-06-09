@@ -37,18 +37,36 @@
 
         @if (!loading() && !error() && cartItems().length > 0) {
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <div class="lg:col-span-2 space-y-4">
-                    @for (item of cartItems(); track item.productId) {
-                        @if (productsById().get(item.productId)) {
-                            <app-cart-item-row
-                                [cartItem]="item"
-                                [product]="productsById().get(item.productId)!"
-                                [isUpdating]="isSubmitting()"
-                                (quantityChange)="onQuantityChange(item.productId, $event)"
-                                (remove)="onRemoveItem(item.productId)"
-                            />
+                <div class="lg:col-span-2 space-y-6">
+                    <!-- Cart Items -->
+                    <div class="space-y-4">
+                        @for (item of cartItems(); track item.productId) {
+                            @if (productsById().get(item.productId)) {
+                                <app-cart-item-row
+                                    [cartItem]="item"
+                                    [product]="productsById().get(item.productId)!"
+                                    [isUpdating]="isSubmitting()"
+                                    (quantityChange)="onQuantityChange(item.productId, $event)"
+                                    (remove)="onRemoveItem(item.productId)"
+                                />
+                            }
                         }
-                    }
+                    </div>
+
+                    <!-- Delivery Address -->
+                    <app-card>
+                        <h2 class="text-xl font-semibold text-text mb-4">Delivery Address</h2>
+                        <app-address-form (addressChange)="onAddressChange($event)" />
+                        @if (addressError()) {
+                            <div
+                                class="mt-4 p-3 rounded-md bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800"
+                            >
+                                <p class="text-sm text-red-600 dark:text-red-400">
+                                    {{ addressError() }}
+                                </p>
+                            </div>
+                        }
+                    </app-card>
                 </div>
 
                 <div>
