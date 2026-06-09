@@ -77,6 +77,28 @@
                             </p>
                         </div>
 
+                        <!-- Supplier Info -->
+                        @if (product()!.supplier) {
+                            <div class="mb-6 p-4 bg-surface-2 rounded-lg border border-border">
+                                <h2 class="text-sm font-semibold text-text mb-2">Supplier</h2>
+                                <div class="space-y-1">
+                                    <p class="text-base font-medium text-text">
+                                        {{ product()!.supplier!.name }}
+                                    </p>
+                                    @if (product()!.supplier!.country) {
+                                        <p class="text-sm text-text-muted">
+                                            {{ product()!.supplier!.country }}
+                                        </p>
+                                    }
+                                    @if (product()!.supplier!.contactEmail) {
+                                        <p class="text-sm text-text-muted">
+                                            {{ product()!.supplier!.contactEmail }}
+                                        </p>
+                                    }
+                                </div>
+                            </div>
+                        }
+
                         <!-- Quantity Selector -->
                         <div class="mb-6">
                             <div class="block text-sm font-medium text-text-muted mb-2">

@@ -25,6 +25,10 @@ export function createProductForm(product?: ProductDto): ProductFormGroup {
             nonNullable: true,
             validators: [Validators.required]
         }),
+        supplierId: new FormControl<string | null>(product?.supplier?.id ?? null, {
+            nonNullable: false,
+            validators: [Validators.required]
+        }),
         imageUrl: new FormControl<string>(product?.imageUrl ?? '', {
             nonNullable: true,
             validators: [Validators.required]

@@ -99,7 +99,8 @@ function handleCreateProduct(body: CreateProductRequest): HttpResponse<unknown> 
         price: body.price,
         weight: body.weight,
         imageUrl: body.imageUrl,
-        category
+        category,
+        supplier: null
     };
 
     mockProducts.push(newProduct);
