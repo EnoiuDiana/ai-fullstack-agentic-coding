@@ -5,6 +5,7 @@ import msg.onlineshopapi.config.TestSecurityConfig;
 import msg.onlineshopapi.dto.ProductCategoryDto;
 import msg.onlineshopapi.dto.ProductRequestDto;
 import msg.onlineshopapi.dto.ProductResponseDto;
+import msg.onlineshopapi.dto.SupplierResponseDto;
 import msg.onlineshopapi.dto.mapper.ProductMapper;
 import msg.onlineshopapi.exception.ResourceNotFoundException;
 import msg.onlineshopapi.model.Product;
@@ -56,6 +57,7 @@ class ProductControllerTest {
 
     private final UUID laptopId = UUID.randomUUID();
     private final UUID categoryId = UUID.randomUUID();
+    private final UUID supplierId = UUID.randomUUID();
 
     @Test
     @WithMockUser(roles = "CUSTOMER")
@@ -201,6 +203,7 @@ class ProductControllerTest {
                 .name(name)
                 .price(BigDecimal.valueOf(999.99))
                 .category(ProductCategoryDto.builder().id(categoryId).name("Electronics").build())
+                .supplier(SupplierResponseDto.builder().id(supplierId).name("TechSupply Co.").build())
                 .build();
     }
 }

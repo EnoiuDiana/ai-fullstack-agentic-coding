@@ -18,8 +18,10 @@ User (id, username, password, role)
   └─> Order (id, user_id, address, created_at)
        └─> OrderDetail (order_id, product_id, quantity, product_price)
 
-Product (id, name, description, price, image_url, weight, category_id)
+Product (id, name, description, price, image_url, weight, category_id, supplier_id)
   └─> Stock (product_id, location_id, quantity)
+
+Supplier (id, name, contact_email, phone_number, country)
 
 Location (id, name, address)
 
@@ -32,6 +34,7 @@ ProductCategory (id, name, description)
 - Order → OrderDetail: One-to-many with cascade delete
 - Product → Stock: One-to-many (tracks inventory per location)
 - Product → ProductCategory: Many-to-one
+- Product → Supplier: Many-to-one
 - OrderDetail → Product: Many-to-one (snapshot price at order time)
 
 **Composite Keys:**
@@ -118,6 +121,8 @@ Base URL: `http://localhost:3000/api`
 - `GET /products` - Product catalog
 - `GET /products/{id}` - Product details
 - `GET /product-categories` - Categories list
+- `GET /suppliers` - Suppliers list
+- `GET /suppliers/{id}` - Supplier details
 
 **Customer Endpoints (require JWT):**
 
@@ -127,7 +132,7 @@ Base URL: `http://localhost:3000/api`
 
 **Admin Endpoints (require ADMIN role):**
 
-- `POST /products` - Create product
+- `POST /products` - Create product (requires supplierId)
 - `PUT /products/{id}` - Update product
 - `DELETE /products/{id}` - Delete product
 
@@ -135,7 +140,8 @@ Base URL: `http://localhost:3000/api`
 
 Flyway manages schema:
 
-- `src/main/resources/db/migration/V1__create_tables.sql` - Schema creation
+- `src/main/resources/db/migration/V1__create_tables.sql` - Initial schema creation
+- `src/main/resources/db/migration/V2__add_suppliers.sql` - Supplier tracking
 - `src/main/resources/db/migration/local/` - Local seed data (profile-specific)
 
 Migrations run automatically on startup.

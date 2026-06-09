@@ -1,10 +1,11 @@
 import { Component, OnInit, inject, signal, effect, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
-import { take } from 'rxjs';
+import { take, forkJoin } from 'rxjs';
 import { CardComponent } from '../../../../../clib/components/card/card.component';
 import { SpinnerComponent } from '../../../../../clib/components/spinner/spinner.component';
 import { ProductFormComponent } from '../../views/product-form/product-form.component';
 import { ProductService } from '../../../services/product.service';
+import { SuppliersService } from '../../../../../core/services/suppliers.service';
 import { createProductForm } from '../../../utils/product-form.utils';
 import { AppNavRoutes } from '../../../../../core/config/constants/navigation.constants';
 import { NotificationsService } from '../../../../../core/services/notifications.service';
@@ -18,11 +19,13 @@ import { NotificationsService } from '../../../../../core/services/notifications
 })
 export class ProductCreatePageComponent implements OnInit {
     private readonly productService = inject(ProductService);
+    private readonly suppliersService = inject(SuppliersService);
     private readonly router = inject(Router);
     private readonly notificationsService = inject(NotificationsService);
 
     readonly form = createProductForm();
     readonly categories = this.productService.categories;
+    readonly suppliers = this.suppliersService.suppliers;
     readonly loading = this.productService.loading;
     readonly isSubmitting = signal(false);
 
@@ -38,7 +41,20 @@ export class ProductCreatePageComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.productService.loadCategories().pipe(take(1)).subscribe();
+        forkJoin({
+            categories: this.productService.loadCategories(),
+            suppliers: this.suppliersService.getAll()
+        })
+            .pipe(take(1))
+            .subscribe({
+                error: err => {
+                    console.error('Failed to load form data:', err);
+                    this.notificationsService.notifyError({
+                        title: 'Loading failed',
+                        message: 'Unable to load categories or suppliers.'
+                    });
+                }
+            });
     }
 
     onSubmit(): void {
@@ -54,7 +70,8 @@ export class ProductCreatePageComponent implements OnInit {
             price: formValue.price,
             weight: formValue.weight,
             imageUrl: formValue.imageUrl,
-            categoryId: formValue.categoryId
+            categoryId: formValue.categoryId,
+            supplierId: formValue.supplierId || undefined
         };
 
         this.isSubmitting.set(true);

@@ -1,10 +1,11 @@
 import { Component, OnInit, inject, signal, effect, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { take } from 'rxjs';
+import { take, forkJoin } from 'rxjs';
 import { CardComponent } from '../../../../../clib/components/card/card.component';
 import { SpinnerComponent } from '../../../../../clib/components/spinner/spinner.component';
 import { ProductFormComponent } from '../../views/product-form/product-form.component';
 import { ProductService } from '../../../services/product.service';
+import { SuppliersService } from '../../../../../core/services/suppliers.service';
 import { createProductForm } from '../../../utils/product-form.utils';
 import { AppNavRoutes } from '../../../../../core/config/constants/navigation.constants';
 import { NotificationsService } from '../../../../../core/services/notifications.service';
@@ -18,6 +19,7 @@ import { NotificationsService } from '../../../../../core/services/notifications
 })
 export class ProductUpdatePageComponent implements OnInit {
     private readonly productService = inject(ProductService);
+    private readonly suppliersService = inject(SuppliersService);
     private readonly route = inject(ActivatedRoute);
     private readonly router = inject(Router);
     private readonly notificationsService = inject(NotificationsService);
@@ -25,6 +27,7 @@ export class ProductUpdatePageComponent implements OnInit {
     readonly form = createProductForm();
     readonly product = this.productService.selectedProduct;
     readonly categories = this.productService.categories;
+    readonly suppliers = this.suppliersService.suppliers;
     readonly loading = this.productService.loading;
     readonly error = this.productService.error;
     readonly isSubmitting = signal(false);
@@ -40,7 +43,8 @@ export class ProductUpdatePageComponent implements OnInit {
                     price: prod.price,
                     weight: prod.weight,
                     imageUrl: prod.imageUrl,
-                    categoryId: prod.category.id
+                    categoryId: prod.category.id,
+                    supplierId: prod.supplier?.id ?? null
                 });
             }
         });
@@ -59,8 +63,21 @@ export class ProductUpdatePageComponent implements OnInit {
         const id = this.route.snapshot.paramMap.get('id');
         if (id) {
             this.productId.set(id);
-            this.productService.loadById(id).pipe(take(1)).subscribe();
-            this.productService.loadCategories().pipe(take(1)).subscribe();
+            forkJoin({
+                product: this.productService.loadById(id),
+                categories: this.productService.loadCategories(),
+                suppliers: this.suppliersService.getAll()
+            })
+                .pipe(take(1))
+                .subscribe({
+                    error: err => {
+                        console.error('Failed to load data:', err);
+                        this.notificationsService.notifyError({
+                            title: 'Failed to load data',
+                            message: 'Unable to load product details. Please try again.'
+                        });
+                    }
+                });
         } else {
             this.router.navigate([
                 `/${AppNavRoutes.Products.root}/${AppNavRoutes.Products.features.overview}`
@@ -84,7 +101,8 @@ export class ProductUpdatePageComponent implements OnInit {
             price: formValue.price,
             weight: formValue.weight,
             imageUrl: formValue.imageUrl,
-            categoryId: formValue.categoryId
+            categoryId: formValue.categoryId,
+            supplierId: formValue.supplierId || undefined
         };
 
         this.isSubmitting.set(true);
@@ -122,8 +140,27 @@ export class ProductUpdatePageComponent implements OnInit {
     retry(): void {
         const id = this.productId();
         if (id) {
-            this.productService.loadById(id).pipe(take(1)).subscribe();
-            this.productService.loadCategories().pipe(take(1)).subscribe();
+            forkJoin({
+                product: this.productService.loadById(id),
+                categories: this.productService.loadCategories(),
+                suppliers: this.suppliersService.getAll(true)
+            })
+                .pipe(take(1))
+                .subscribe({
+                    next: () => {
+                        this.notificationsService.notifySuccess({
+                            title: 'Data loaded',
+                            message: 'Product details loaded successfully.'
+                        });
+                    },
+                    error: err => {
+                        console.error('Failed to load data:', err);
+                        this.notificationsService.notifyError({
+                            title: 'Failed to load data',
+                            message: 'Unable to load product details. Please try again.'
+                        });
+                    }
+                });
         }
     }
 }
