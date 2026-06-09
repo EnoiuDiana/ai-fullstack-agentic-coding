@@ -39,6 +39,11 @@ testem.log
 /typings
 __screenshots__/
 
+# AI-generated session artifacts
+IMPLEMENTATION_SUMMARY.md
+app-screenshots/
+onboarding-screenshots-*/
+
 # System files
 .DS_Store
 Thumbs.db

@@ -1,6 +1,7 @@
 package msg.onlineshopapi.dto;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
@@ -13,6 +14,8 @@ import java.util.List;
 @Builder
 public class OrderRequestDto {
 
+    @NotNull(message = "Items are required")
+    @NotEmpty(message = "Order must contain at least one item")
     private List<OrderItemRequestDto> items;
 
     @NotNull(message = "Address is required")

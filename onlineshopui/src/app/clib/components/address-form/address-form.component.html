@@ -11,7 +11,7 @@
                 formControlName="country"
                 class="w-full px-3 py-2 border border-border rounded-md bg-surface text-text focus:ring-2 focus:ring-ring focus:border-transparent transition-colors"
                 [class.border-destructive]="hasError('country')"
-                [class.focus:ring-destructive]="hasError('country')"
+                [ngClass]="{ 'focus:ring-destructive': hasError('country') }"
                 placeholder="e.g., USA"
             />
             @if (hasError('country')) {
@@ -30,7 +30,7 @@
                 formControlName="city"
                 class="w-full px-3 py-2 border border-border rounded-md bg-surface text-text focus:ring-2 focus:ring-ring focus:border-transparent transition-colors"
                 [class.border-destructive]="hasError('city')"
-                [class.focus:ring-destructive]="hasError('city')"
+                [ngClass]="{ 'focus:ring-destructive': hasError('city') }"
                 placeholder="e.g., Seattle"
             />
             @if (hasError('city')) {
@@ -49,7 +49,7 @@
                 formControlName="county"
                 class="w-full px-3 py-2 border border-border rounded-md bg-surface text-text focus:ring-2 focus:ring-ring focus:border-transparent transition-colors"
                 [class.border-destructive]="hasError('county')"
-                [class.focus:ring-destructive]="hasError('county')"
+                [ngClass]="{ 'focus:ring-destructive': hasError('county') }"
                 placeholder="e.g., King"
             />
             @if (hasError('county')) {
@@ -68,7 +68,7 @@
                 formControlName="streetAddress"
                 class="w-full px-3 py-2 border border-border rounded-md bg-surface text-text focus:ring-2 focus:ring-ring focus:border-transparent transition-colors"
                 [class.border-destructive]="hasError('streetAddress')"
-                [class.focus:ring-destructive]="hasError('streetAddress')"
+                [ngClass]="{ 'focus:ring-destructive': hasError('streetAddress') }"
                 placeholder="e.g., 123 Pine Street"
             />
             @if (hasError('streetAddress')) {

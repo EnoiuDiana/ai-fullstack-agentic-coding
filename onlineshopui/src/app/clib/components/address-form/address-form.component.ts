@@ -1,21 +1,20 @@
-import { ChangeDetectionStrategy, Component, computed, effect, input, output } from '@angular/core';
+import { NgClass } from '@angular/common';
+import { ChangeDetectionStrategy, Component, effect, input, output } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AddressDto } from '../../../core/types/dtos/location.dto';
 
 @Component({
     selector: 'app-address-form',
-    imports: [ReactiveFormsModule],
+    imports: [ReactiveFormsModule, NgClass],
     templateUrl: './address-form.component.html',
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AddressFormComponent {
     initialAddress = input<AddressDto | null>(null);
     addressChange = output<AddressDto | null>();
 
     readonly form: FormGroup;
-
-    readonly isValid = computed(() => this.form.valid);
 
     constructor(private fb: FormBuilder) {
         this.form = this.fb.group({
@@ -26,7 +25,7 @@ export class AddressFormComponent {
         });
 
         // Emit address changes
-        this.form.valueChanges.subscribe(() => {
+        this.form.valueChanges.pipe(takeUntilDestroyed()).subscribe(() => {
             if (this.form.valid) {
                 this.addressChange.emit(this.form.value as AddressDto);
             } else {

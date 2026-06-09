@@ -1,1 +1,0 @@
-Product detail page for Wireless Headphones showing price ($149.99), weight (0.25g), description (High-quality wireless headphones with noise cancellation), quantity selector (currently 1), and total price display. Add to Cart button is available.
