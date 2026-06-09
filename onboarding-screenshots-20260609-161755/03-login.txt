@@ -1,0 +1,1 @@
+Login page with credentials filled (onboarduser@example.com). User authentication in progress.

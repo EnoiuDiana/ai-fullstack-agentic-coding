@@ -1,0 +1,1 @@
+Order successfully created and user redirected to orders overview page. Cart has been cleared and order is being processed.

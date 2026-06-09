@@ -1,0 +1,1 @@
+Application homepage showing the product catalog and navigation. The main page displays available products with the ability to browse and shop.

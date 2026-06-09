@@ -14,6 +14,7 @@ This skill provides an interactive onboarding experience for the fullstack e-com
 Before automating anything, check if the applications are running. Ask the user to start the required services:
 
 **Ask the user:**
+
 > To begin the onboarding, please start these services:
 >
 > 1. **Database**: `cd docker/development && docker-compose up -d`
@@ -31,6 +32,7 @@ Wait for the user to confirm all services are up before proceeding.
 Once services are confirmed running, use the Chrome DevTools MCP to automate the complete user flow. For each major step, take a screenshot and create an accompanying .txt file with a concise explanation.
 
 **Test User Credentials** (use these throughout):
+
 - Email: `onboarduser@example.com`
 - First Name: `onboarduser`
 - Last Name: `onboarduser`
@@ -39,12 +41,14 @@ Once services are confirmed running, use the Chrome DevTools MCP to automate the
 **Automated Flow:**
 
 #### 2.1: Open Browser and Navigate to App
+
 - Use `mcp__chrome-devtools__new_page` to create a new browser page
 - Use `mcp__chrome-devtools__navigate_page` to go to `http://localhost:4200`
 - Take screenshot: `01-homepage.png`
 - Create explanation: `01-homepage.txt` with text like "Application homepage showing the product catalog and navigation"
 
 #### 2.2: Register New User
+
 - Click the Register/Sign Up link or button (use `mcp__chrome-devtools__click`)
 - Fill registration form using `mcp__chrome-devtools__fill_form` with:
   - Email: `onboarduser@example.com`
@@ -56,6 +60,7 @@ Once services are confirmed running, use the Chrome DevTools MCP to automate the
 - Create explanation: `02-registration.txt` describing the registration success
 
 #### 2.3: Login
+
 - Navigate to login page if redirected elsewhere
 - Fill login form using `mcp__chrome-devtools__fill_form` with:
   - Username/Email: `onboarduser@example.com`
@@ -65,42 +70,66 @@ Once services are confirmed running, use the Chrome DevTools MCP to automate the
 - Create explanation: `03-login-success.txt` describing successful authentication
 
 #### 2.4: Browse Products
+
 - Wait for product catalog to load (`mcp__chrome-devtools__wait_for` if needed)
 - Take screenshot: `04-product-catalog.png`
 - Create explanation: `04-product-catalog.txt` listing visible products and describing the catalog UI
 
 #### 2.5: Navigate to Specific Product
+
 - Click on a product card/link to view product details
 - Wait for product detail page to load
 - Take screenshot: `05-product-detail.png`
 - Create explanation: `05-product-detail.txt` describing the product details shown (name, price, description, etc.)
 
 #### 2.6: Add Product to Cart
+
 - Click "Add to Cart" button (use `mcp__chrome-devtools__click`)
 - Wait for confirmation or cart update
 - Take screenshot: `06-add-to-cart.png`
 - Create explanation: `06-add-to-cart.txt` confirming the item was added to cart
 
 #### 2.7: Navigate to Cart
+
 - Click cart icon or navigate to cart page
 - Take screenshot: `07-cart-view.png`
 - Create explanation: `07-cart-view.txt` showing cart contents with product and quantity
 
-#### 2.8: Create Order
-- Click checkout or "Create Order" button
-- Complete any required checkout steps (shipping, payment info if applicable)
-- Submit/confirm the order
-- Take screenshot: `08-order-created.png`
-- Create explanation: `08-order-created.txt` confirming order creation with order ID if visible
+#### 2.8: Fill Delivery Address
 
-#### 2.9: View Orders Page
+- Scroll to the "Delivery Address" section in the cart page
+- Fill the address form using `mcp__chrome-devtools__fill_form` with:
+  - Country: `USA`
+  - City: `Seattle`
+  - County: `King`
+  - Street Address: `123 Test Street`
+- Take screenshot: `08-delivery-address.png`
+- Create explanation: `08-delivery-address.txt` showing the completed delivery address form
+
+#### 2.9: Create Order
+
+- Click "Place Order" button (ensure address is filled first)
+- Wait for order confirmation/redirect
+- Take screenshot: `09-order-created.png`
+- Create explanation: `09-order-created.txt` confirming order creation with order ID if visible
+
+#### 2.10: View Orders Page
+
 - Navigate to orders/order history page
-- Take screenshot: `09-orders-page.png`
-- Create explanation: `09-orders-page.txt` showing the newly created order in the order list
+- Take screenshot: `10-orders-page.png`
+- Create explanation: `10-orders-page.txt` showing the newly created order in the order list
+
+#### 2.11: View Order Details
+
+- Click on the newly created order to view its details
+- Wait for order detail page to load
+- Take screenshot: `11-order-detail.png`
+- Create explanation: `11-order-detail.txt` showing order details including the delivery address (Country, City, County, Street Address)
 
 ### Step 3: Summary
 
 After completing all steps, provide a brief summary:
+
 - Total steps completed
 - Location of screenshots and explanations
 - Note about the browser state (left open for exploration or closed)
@@ -108,6 +137,7 @@ After completing all steps, provide a brief summary:
 ## Error Handling
 
 If any step fails:
+
 - Take a screenshot of the error state
 - Create an explanation file describing what went wrong
 - Report the failure to the user with context
@@ -116,6 +146,7 @@ If any step fails:
 ## Screenshot Naming Convention
 
 Use sequential numbering with descriptive names:
+
 - `01-homepage.png` / `01-homepage.txt`
 - `02-registration.png` / `02-registration.txt`
 - etc.
